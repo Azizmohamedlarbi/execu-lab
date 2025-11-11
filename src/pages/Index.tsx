@@ -1,8 +1,15 @@
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { ArrowRight, Shield, Lightbulb, Target, TrendingUp, FileCheck, Zap, Factory, Building2, Leaf, Brain } from "lucide-react";
+import { BlueprintRequestForm } from "@/components/BlueprintRequestForm";
+import { AuditRequestForm } from "@/components/AuditRequestForm";
 
 const Index = () => {
+  const [blueprintDialogOpen, setBlueprintDialogOpen] = useState(false);
+  const [auditDialogOpen, setAuditDialogOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
@@ -15,12 +22,21 @@ const Index = () => {
           <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
             <a href="#services" className="text-foreground/80 hover:text-foreground transition-colors">Services</a>
             <a href="#verticals" className="text-foreground/80 hover:text-foreground transition-colors">Verticals</a>
-            <a href="#intelligence" className="text-foreground/80 hover:text-foreground transition-colors">Intelligence Engine</a>
             <a href="#resources" className="text-foreground/80 hover:text-foreground transition-colors">Resources</a>
           </nav>
-          <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
-            Start Your Project
-          </Button>
+          <Dialog open={blueprintDialogOpen} onOpenChange={setBlueprintDialogOpen}>
+            <DialogTrigger asChild>
+              <Button className="bg-secondary text-secondary-foreground hover:bg-secondary/90">
+                Start Your Project
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+              <DialogHeader>
+                <DialogTitle>Request a Blueprint</DialogTitle>
+              </DialogHeader>
+              <BlueprintRequestForm onSuccess={() => setBlueprintDialogOpen(false)} />
+            </DialogContent>
+          </Dialog>
         </div>
       </header>
 
@@ -42,14 +58,35 @@ const Index = () => {
               launching, financing, or optimizing your business in regulated industries.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-              <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
-                Get My Blueprint
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8">
-                Free Diagnostic Audit
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <Dialog open={blueprintDialogOpen} onOpenChange={setBlueprintDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
+                    Get My Blueprint
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Request Your Blueprint</DialogTitle>
+                  </DialogHeader>
+                  <BlueprintRequestForm onSuccess={() => setBlueprintDialogOpen(false)} />
+                </DialogContent>
+              </Dialog>
+              
+              <Dialog open={auditDialogOpen} onOpenChange={setAuditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="lg" variant="outline" className="text-lg px-8">
+                    Free Diagnostic Audit
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Request a Diagnostic Audit</DialogTitle>
+                  </DialogHeader>
+                  <AuditRequestForm onSuccess={() => setAuditDialogOpen(false)} />
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
@@ -202,10 +239,20 @@ const Index = () => {
                     Reduce risk. Accelerate funding. Move from pitch to operation.
                   </p>
                 </div>
-                <Button className="w-full" variant="outline">
-                  Explore Blueprints
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Dialog open={blueprintDialogOpen} onOpenChange={setBlueprintDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full" variant="outline">
+                      Explore Blueprints
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Request Your Blueprint</DialogTitle>
+                    </DialogHeader>
+                    <BlueprintRequestForm onSuccess={() => setBlueprintDialogOpen(false)} />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
             
@@ -226,10 +273,20 @@ const Index = () => {
                     Cut costs. Stay compliant. Automate without chaos.
                   </p>
                 </div>
-                <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
-                  Request an Audit
-                  <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
+                <Dialog open={auditDialogOpen} onOpenChange={setAuditDialogOpen}>
+                  <DialogTrigger asChild>
+                    <Button className="w-full bg-accent text-accent-foreground hover:bg-accent/90">
+                      Request an Audit
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <DialogHeader>
+                      <DialogTitle>Request a Diagnostic Audit</DialogTitle>
+                    </DialogHeader>
+                    <AuditRequestForm onSuccess={() => setAuditDialogOpen(false)} />
+                  </DialogContent>
+                </Dialog>
               </CardContent>
             </Card>
           </div>
@@ -324,14 +381,35 @@ const Index = () => {
               Ready to Transform Your Concept into an Action Plan?
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
-                Book My Blueprint Intake (90 min)
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8">
-                Request Diagnostic Audit
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
+              <Dialog open={blueprintDialogOpen} onOpenChange={setBlueprintDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="lg" className="bg-secondary text-secondary-foreground hover:bg-secondary/90 text-lg px-8">
+                    Book My Blueprint Intake (90 min)
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Request Your Blueprint</DialogTitle>
+                  </DialogHeader>
+                  <BlueprintRequestForm onSuccess={() => setBlueprintDialogOpen(false)} />
+                </DialogContent>
+              </Dialog>
+              
+              <Dialog open={auditDialogOpen} onOpenChange={setAuditDialogOpen}>
+                <DialogTrigger asChild>
+                  <Button size="lg" variant="outline" className="text-lg px-8">
+                    Request Diagnostic Audit
+                    <ArrowRight className="ml-2 h-5 w-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+                  <DialogHeader>
+                    <DialogTitle>Request a Diagnostic Audit</DialogTitle>
+                  </DialogHeader>
+                  <AuditRequestForm onSuccess={() => setAuditDialogOpen(false)} />
+                </DialogContent>
+              </Dialog>
             </div>
           </div>
         </div>
